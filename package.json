@@ -1,0 +1,32 @@
+{
+  "name": "round-pong-web",
+  "version": "1.0.0",
+  "repository": "https://bartos97@bitbucket.org/bartos97/round-pong-web.git",
+  "author": "Bartłomiej Zając <bartoss97@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "webpack --env.production --config webpack.prod.js",
+    "start": "webpack-dev-server --open --config webpack.dev.js"
+  },
+  "devDependencies": {
+    "autoprefixer": "^9.7.3",
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^3.3.1",
+    "favicons-webpack-plugin": "^1.0.2",
+    "file-loader": "^5.0.2",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "postcss-loader": "^3.0.0",
+    "resolve-url-loader": "^3.1.1",
+    "sass": "^1.23.7",
+    "sass-loader": "^8.0.0",
+    "style-loader": "^1.0.1",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.3",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.9.0",
+    "webpack-merge": "^4.2.2"
+  }
+}
