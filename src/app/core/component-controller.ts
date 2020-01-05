@@ -1,15 +1,15 @@
 export abstract class ComponentController {
-    readonly TEMPLATE: Element;
+    readonly TEMPLATE: HTMLElement;
 
-    protected constructor(templateHook: Element) {
+    protected constructor(templateHook: HTMLElement) {
         this.TEMPLATE = templateHook;
     }
 
-    protected getElement(selector: string): Element {
+    protected getElement(selector: string): HTMLElement {
         return this.TEMPLATE.querySelector(selector);
     }
 
-    protected regiterEvent(element: Element, eventName: string, callback: () => void) {
+    protected regiterEvent(element: HTMLElement, eventName: string, callback: () => void) {
         element.addEventListener(eventName, callback.bind(this));
     }
 }

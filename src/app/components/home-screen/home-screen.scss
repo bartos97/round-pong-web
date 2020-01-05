@@ -1,0 +1,23 @@
+@use 'functions' as *;
+@use 'variables' as *;
+
+.home-screen {
+    height: calc(100vh - 2 * #{$app-gutter});
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    h1 {
+        font-size: rem-calc(50);
+        margin: 0;
+        margin-bottom: auto;
+        padding-top: 2rem;
+    }
+
+    .button {
+        font-size: rem-calc(40);
+        padding: 1rem 3rem;
+        margin-bottom: auto;
+    }
+}

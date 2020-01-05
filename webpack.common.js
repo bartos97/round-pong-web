@@ -44,7 +44,10 @@ module.exports = {
                         loader: 'sass-loader',
                         options: {
                             sourceMap: true,
-                            implementation: require('sass')
+                            implementation: require('sass'),
+                            sassOptions: {
+                                includePaths: ['src/sass']
+                            }
                         }
                     }
                 ],

@@ -1,18 +1,15 @@
 import { ComponentController } from '../../core/component-controller';
 
 export class HomeScreenController extends ComponentController {
-    private name: string;
-    private button: Element;
-
-    constructor(templateHook: Element) {
+    constructor(templateHook: HTMLElement) {
         super(templateHook);
-        this.name = 'dupa' + Math.floor(Math.random() * 1000);
-        console.log(this.name + ' here!');
-        this.button = this.getElement('button');
-        this.regiterEvent(this.button, 'click', this.buttonOnClick);
+        this.regiterEvent(this.getElement('button'), 'click', this.onClick);
     }
 
-    private buttonOnClick(): void {
-        console.log(this.name + ' clicked!');
+    private onClick(): void {
+        const game = document.getElementById('game-screen');
+        this.TEMPLATE.hidden = true;
+        game.hidden = false;
+        game.classList.add('show');
     }
 }

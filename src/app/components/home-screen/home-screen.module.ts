@@ -2,6 +2,8 @@ import { Module } from '../../core/module';
 import { HomeScreenController } from './home-screen.controller';
 import { ComponentController } from '../../core/component-controller';
 
-const controllers = Module.register('.home-screen', (templateHook: Element): ComponentController => {
+require('./home-screen.scss');
+
+const controllers = Module.register('.home-screen', (templateHook: HTMLElement): ComponentController => {
     return new HomeScreenController(templateHook);
 });

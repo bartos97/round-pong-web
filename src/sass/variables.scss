@@ -1,2 +1,12 @@
-$color-primary: rgb(40, 40, 40);
-$color-secondary: rgb(77, 128, 153);
+// App config
+$rem-base: 16px;
+$app-min-size: 600px;
+$app-max-width: 1200px;
+$app-gutter: 1rem;
+
+// Colors
+$color-primary: rgb(77, 128, 153);
+$color-secondary: rgb(40, 40, 40);
+
+// Typograpgy
+$font-main: 'Ubuntu', sans-serif;

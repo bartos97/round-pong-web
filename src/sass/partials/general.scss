@@ -1,0 +1,29 @@
+@use './variables.scss' as *;
+@use './mixins.scss' as *;
+
+body {
+    background: $color-secondary;
+    color: #fff;
+    font-family: $font-main;
+    font-size: $rem-base;
+}
+
+main {
+    @include mx-auto;
+    padding: $app-gutter;
+    min-width: calc(#{$app-min-size} - 2 * #{$app-gutter});
+    min-height: calc(100vh - 2 * #{$app-gutter});
+    max-width: calc(#{$app-max-width} - 2 * #{$app-gutter});
+}
+
+[hidden] {
+    display: none !important;
+}
+
+.show {
+    opacity: 1 !important;
+}
+
+.hide {
+    opacity: 0 !important;
+}

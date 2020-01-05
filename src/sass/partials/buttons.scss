@@ -1,0 +1,26 @@
+@use '../variables.scss' as *;
+
+.button {
+    background: transparent;
+    box-shadow: none;
+    text-transform: uppercase;
+    color: $color-primary;
+    font-weight: 500;
+    line-height: 1;
+    border: 2px solid $color-primary;
+    padding: 0.5rem 1.5rem;
+
+    &:hover {
+        cursor: pointer;
+        background-color: rgba(0, 0, 0, 0.25);
+    }
+
+    &.small {
+        font-size: 0.75rem;
+    }
+
+    &.big {
+        font-size: 1.5rem;
+        padding: 1rem 2.5rem;
+    }
+}
