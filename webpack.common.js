@@ -83,7 +83,7 @@ module.exports = {
             }
         }),
         new FaviconsWebpackPlugin({
-            logo: './src/assets/favicon.png',
+            logo: './src/assets/img/favicon.png',
             prefix: 'assets/favicons/'
         })
     ],

@@ -1,4 +1,4 @@
 # Round Pong
-![logo](/src/assets/favicon_preview.png)
+![logo](/src/assets/img/favicon_preview.png)
 
 Circular variation of classic Pong game in TypeScript.
