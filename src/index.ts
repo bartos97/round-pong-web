@@ -2,4 +2,6 @@
  * Webpack entry point file
  */
 
-import './sass/main.scss';
+require('./sass/main.scss');
+
+require('./app/components/home-screen/home-screen.module.ts');
