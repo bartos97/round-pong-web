@@ -59,13 +59,16 @@ module.exports = {
             },
             {
               test: /\.(png|svg|jpg|gif)$/,
-              include: path.resolve(__dirname, 'src/assets'),
               loader: 'file-loader',
               options: {
                   outputPath: 'assets/img',
                   publicPath: 'assets/img',
                   esModule: false
               }
+            },
+            {
+                test: /\.(woff|woff2|eot|ttf|otf)$/,
+                loader: 'file-loader',
             },
             {
                 test: /\.html$/,

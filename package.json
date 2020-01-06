@@ -30,6 +30,7 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
+    "boxicons": "^2.0.4",
     "normalize.css": "^8.0.1"
   }
 }
