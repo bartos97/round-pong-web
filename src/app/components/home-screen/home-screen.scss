@@ -2,6 +2,7 @@
 @use 'variables' as *;
 
 .home-screen {
+    min-height: calc(#{$app-min-size} - 2 * #{$app-gutter});
     height: calc(100vh - 2 * #{$app-gutter});
     text-align: center;
     display: flex;

@@ -1,3 +1,61 @@
+@use 'functions' as *;
+@use 'mixins' as *;
+@use 'variables' as *;
+
 .game-screen {
-    
+    position: relative;
+    min-height: calc(#{$app-min-size} - 2 * #{$app-gutter});
+    height: calc(100vh - 2 * #{$app-gutter});
+
+    .board {
+        @include mx-auto();
+        min-height: calc(#{$app-min-size} - 2 * #{$app-gutter});
+        height: calc(100vh - 2 * #{$app-gutter});
+        min-width: calc(#{$app-min-size} - 2 * #{$app-gutter});
+        width: calc(100vh - 2 * #{$app-gutter});
+        border-radius: 1000vw;
+        border: 5px solid $color-primary;
+        position: relative;
+        box-sizing: border-box;
+
+        &::after {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 0;
+            left: calc(50% - 1px);
+            width: 2px;
+            height: 100%;
+            background-color: $color-primary;
+        }
+    }
+
+    canvas {
+        width: 100%;
+        height: 100%;
+    }
+
+    .button-pause {
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: rem-calc(50);
+        padding: 0;
+    }
+
+    .score {
+        position: absolute;
+        bottom: 0;
+        font-weight: 700;
+        font-size: rem-calc(50);
+        color: $color-primary;
+
+        &.left {
+            left: 0;
+        }
+
+        &.right {
+            right: 0;
+        }
+    }
 }
