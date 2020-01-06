@@ -59,18 +59,21 @@ module.exports = {
             },
             {
               test: /\.(png|svg|jpg|gif)$/,
-              include: path.resolve(__dirname, 'src'),
+              include: path.resolve(__dirname, 'src/assets'),
               loader: 'file-loader',
               options: {
-                  outputPath: 'assets/img'
+                  outputPath: 'assets/img',
+                  publicPath: 'assets/img',
+                  esModule: false
               }
             },
             {
-                test: /\.template\.html$/,
-                include: path.resolve(__dirname, 'src'),
+                test: /\.html$/,
+                include: path.resolve(__dirname, 'src/app'),
                 loader: 'html-loader',
                 options: {
-                    interpolate: true
+                    interpolate: true,
+                    root: path.resolve(__dirname)
                 }
             }
         ],
@@ -87,7 +90,10 @@ module.exports = {
         }),
         new FaviconsWebpackPlugin({
             logo: './src/assets/img/favicon.png',
-            prefix: 'assets/favicons/'
+            prefix: '',
+            outputPath: 'assets/favicons',
+            prefix: 'assets/favicons',
+            publicPath: './'
         })
     ],
 };
