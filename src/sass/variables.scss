@@ -1,12 +1,25 @@
 // App config
 $rem-base: 16px;
+
 $app-min-size: 600px;
 $app-max-width: 1200px;
 $app-gutter: 1rem;
 
+$backdrop-index: 1000;
+
 // Colors
 $color-primary: rgb(77, 128, 153);
 $color-secondary: rgb(40, 40, 40);
+
+$gray-100: #f8f9fa !default;
+$gray-200: #e9ecef !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #ced4da !default;
+$gray-500: #adb5bd !default;
+$gray-600: #6c757d !default;
+$gray-700: #495057 !default;
+$gray-800: #343a40 !default;
+$gray-900: #212529 !default;
 
 // Typograpgy
 $font-main: 'Ubuntu', sans-serif;
