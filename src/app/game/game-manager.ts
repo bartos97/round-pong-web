@@ -1,7 +1,5 @@
 import { Player, PlayerType } from "./player";
-
-//TODO: emmm, just look at it
-let bind: any;
+import { Ball } from "./ball";
 
 export interface GameEvents {
     onScore?: (player: Player, score: number) => void;
@@ -10,11 +8,16 @@ export interface GameEvents {
 
 export class GameManager {
     //#region members
+    public static ON_UPDATE_BIND: any;
+
     private _context: CanvasRenderingContext2D;
     private _canvas: HTMLCanvasElement;
-    private _callbacks?: GameEvents;
+    private _callbacks: GameEvents;
     private _lastFrameTime: DOMHighResTimeStamp = 0;
     private _deltaTime: DOMHighResTimeStamp = 0;
+    private _playerLeft: Player;
+    private _playerRight: Player;
+    private _ball: Ball;
     //#endregion
 
     constructor(canvas: HTMLCanvasElement, eventsCallbacks?: GameEvents, originator?: any) {
@@ -22,12 +25,12 @@ export class GameManager {
         this._callbacks = eventsCallbacks;
         this._context = this._canvas.getContext("2d");
 
-        //TODO: check if exists blablabla
-        this._callbacks.onScore = this._callbacks.onScore.bind(originator);
-        this._callbacks.onWin = this._callbacks.onWin.bind(originator);
+        //TODO: test
+        this._callbacks.onScore = this._callbacks?.onScore?.bind(originator);
+        this._callbacks.onWin = this._callbacks?.onWin?.bind(originator);
 
-        bind = this.onUpdate.bind(this);
-        window.requestAnimationFrame(bind);
+        GameManager.ON_UPDATE_BIND = this.onUpdate.bind(this);
+        window.requestAnimationFrame(GameManager.ON_UPDATE_BIND);
     }
 
     //#region methods
@@ -43,7 +46,7 @@ export class GameManager {
 
         // console.log(this._deltaTime);
 
-        window.requestAnimationFrame(bind);
+        window.requestAnimationFrame(GameManager.ON_UPDATE_BIND);
     }
 
     private onKeyPress(event: KeyboardEvent): void {}

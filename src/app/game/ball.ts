@@ -14,6 +14,8 @@ export class Ball {
     }
 
     //#region methods
+    public render(): void {}
+    
     public checkBoardCollision(): boolean {
         return false;
     }

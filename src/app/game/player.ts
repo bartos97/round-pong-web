@@ -20,6 +20,8 @@ export class Player {
     }
 
     //#region methods
+    public render(): void {}
+    
     public checkCollision(ball: Ball): boolean {
         return false;
     }

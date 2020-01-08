@@ -1,6 +1,10 @@
 @use './variables.scss' as *;
 @use './mixins.scss' as *;
 
+* {
+    box-sizing: border-box;
+}
+
 body {
     background: $color-secondary;
     color: #fff;
@@ -15,9 +19,9 @@ body {
 main {
     @include mx-auto;
     padding: $app-gutter;
-    min-width: calc(#{$app-min-size} - 2 * #{$app-gutter});
-    min-height: calc(#{$app-min-size} - 2 * #{$app-gutter});
-    max-width: calc(#{$app-max-width} - 2 * #{$app-gutter});
+    min-width: calc(#{$app-min-size} + 2 * #{$app-gutter});
+    min-height: calc(#{$app-min-size} + 2 * #{$app-gutter});
+    max-width: $app-max-width;
 }
 
 [hidden] {
