@@ -1,9 +1,7 @@
-// import { Module } from '../../core/module';
-// import { DialogController } from './dialog.controller';
-// import { ComponentController } from '../../core/component-controller';
+
 
 require('./dialog.scss');
 
-// const controllers = Module.register('.dialog-backdrop', (templateHook: HTMLElement): ComponentController => {
-//     return new DialogController(templateHook);
-// });
+// DialogController is Singleton 
+// and it's template is placed in app-root and shouldn't be used anywhere again
+// Yeah I know, not great not terrible

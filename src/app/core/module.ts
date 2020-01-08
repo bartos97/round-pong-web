@@ -1,7 +1,7 @@
 import {ComponentController} from './component-controller';
 
 export class Module {
-    static register(
+    public static register(
         templateSelector: string, 
         factory: (templateHook: HTMLElement) => ComponentController
     ): ComponentController[] {
@@ -12,4 +12,6 @@ export class Module {
         });
         return controllers;
     }
+
+    private constructor() {}
 }

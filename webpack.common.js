@@ -69,6 +69,10 @@ module.exports = {
             {
                 test: /\.(woff|woff2|eot|ttf|otf)$/,
                 loader: 'file-loader',
+                options: {
+                    outputPath: 'assets/fonts',
+                    publicPath: 'assets/fonts',
+                }
             },
             {
                 test: /\.html$/,

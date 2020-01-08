@@ -12,22 +12,21 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
 }
 
 .dialog {
     box-sizing: border-box;
     width: rem-calc(500);
-    height: calc(100vh - 2rem);
-    max-height: rem-calc(600);
+    max-height: calc(100vh - 3rem);
     overflow-y: auto;
     overflow-x: hidden;
-    margin: 1rem;
+    margin: 1.5rem 1rem; 
     padding: 1rem;
     border: 1px solid $color-primary;
     background-color: $color-secondary;
     position: relative;
-    cursor: auto;
+    display: flex;
+    flex-direction: column;;
 
     .title {
         font-size: rem-calc(32);
@@ -48,5 +47,11 @@
         right: -1px;
         padding: 0.125rem;
         font-size: 2rem;
+    }
+
+    .button-wrap {
+        margin-top: auto;
+        padding: 1rem 0;
+        text-align: center;
     }
 }

@@ -1,5 +1,5 @@
 export abstract class ComponentController {
-    readonly TEMPLATE: HTMLElement;
+    protected readonly TEMPLATE: HTMLElement;
 
     protected constructor(templateHook: HTMLElement) {
         this.TEMPLATE = templateHook;
@@ -9,7 +9,7 @@ export abstract class ComponentController {
         return this.TEMPLATE.querySelector(selector);
     }
 
-    protected regiterEvent(element: HTMLElement, eventName: string, callback: () => void) {
+    protected registerEvent(element: HTMLElement, eventName: string, callback: () => void) {
         element.addEventListener(eventName, callback.bind(this));
     }
 }
