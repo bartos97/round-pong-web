@@ -1,10 +1,14 @@
 <section class="game-screen" id="game-screen">
+    <div class="loader" id="loader"></div>
     <div class="board">
         <canvas id="gameCanvas" width="600" height="600"></canvas>
     </div>
     <div class="score left" id="scoreLeft" title="Score of a left player">0</div>
     <div class="score right" id="scoreRight" title="Score of a right player">0</div>
     <button class="button button-pause" id="buttonPause" title="Pause">
-        <i class='bx bx-pause'></i>
+        <i class='bx bx-pause icon-pause'></i>
+    </button>
+    <button class="button button-pause" id="buttonPlay" title="Play" hidden>
+        <i class='bx bx-play icon-play'></i>
     </button>
 </section>

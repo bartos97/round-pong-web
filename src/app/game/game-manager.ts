@@ -1,55 +1,183 @@
 import { Player, PlayerType } from "./player";
 import { Ball } from "./ball";
+import { Vector2D } from "../core/maths/vector2D";
+import { GameConfig, GameEvents, Renderable } from "./interfaces";
 
-export interface GameEvents {
-    onScore?: (player: Player, score: number) => void;
-    onWin?: (player: Player) => void;
-}
-
+/**
+ * Singleton
+ */
 export class GameManager {
     //#region members
-    public static ON_UPDATE_BIND: any;
+    public static readonly CONFIG: GameConfig = {
+        boardSize: 600,
+        ballRadius: 25,
+        playerThickness: 50,
+        playerSizeAngle: Math.PI / 6.0,
+        playerAngleIncrement: 0.1 * (Math.PI / 2 - Math.PI / 12),
+        charactersColor: 'rgb(77, 128, 153)',
+        gameStartDelay: 1000
+    }
+
+    private static _instance: GameManager;
+    private static _isInitialized: boolean = false;
 
     private _context: CanvasRenderingContext2D;
     private _canvas: HTMLCanvasElement;
     private _callbacks: GameEvents;
     private _lastFrameTime: DOMHighResTimeStamp = 0;
     private _deltaTime: DOMHighResTimeStamp = 0;
+    private _onUpdateBind: any;
+    private _isRunning: boolean = false;
+    
+    private _renderables: Renderable[];
     private _playerLeft: Player;
     private _playerRight: Player;
     private _ball: Ball;
     //#endregion
 
-    constructor(canvas: HTMLCanvasElement, eventsCallbacks?: GameEvents, originator?: any) {
+    public static get instance() {
+        return this._instance || (this._instance = new this());
+    }
+
+    public init(canvas: HTMLCanvasElement, eventsCallbacks?: GameEvents, originator?: any) {
+        if (GameManager._isInitialized) return;
+
         this._canvas = canvas;
         this._callbacks = eventsCallbacks;
         this._context = this._canvas.getContext("2d");
+        this._context.translate(GameManager.CONFIG.boardSize / 2, GameManager.CONFIG.boardSize / 2);
+        this._context.save();
 
         //TODO: test
         this._callbacks.onScore = this._callbacks?.onScore?.bind(originator);
         this._callbacks.onWin = this._callbacks?.onWin?.bind(originator);
+        
+        this._renderables = [
+            this._playerLeft = new Player(PlayerType.LEFT),
+            this._playerRight = new Player(PlayerType.RIGHT),
+            this._ball = new Ball()
+        ];
 
-        GameManager.ON_UPDATE_BIND = this.onUpdate.bind(this);
-        window.requestAnimationFrame(GameManager.ON_UPDATE_BIND);
+        document.addEventListener('keydown', this.onKeyPress.bind(this));
+
+        this._onUpdateBind = this.onUpdate.bind(this);
+        window.requestAnimationFrame(this._onUpdateBind);
+        GameManager._isInitialized = true;
     }
 
+    private constructor() {}
+
     //#region methods
-    public start(): void {}
-    public stop(): void {}
-    public toggle(): void {}
-    public restartGame(): void {}
+    public start(): void {
+        this._isRunning = true;
+    }
+    public stop(): void {
+        this._isRunning = false;
+    }
+    public toggle(): void {
+        this._isRunning = !this._isRunning;
+    }
 
     private onUpdate(timestamp: DOMHighResTimeStamp) {
-        this._context.clearRect(0, 0, 600, 600);
+        this._context.clearRect(
+            -GameManager.CONFIG.boardSize / 2,
+            -GameManager.CONFIG.boardSize / 2,
+             GameManager.CONFIG.boardSize,
+             GameManager.CONFIG.boardSize
+        );
         this._deltaTime = timestamp - this._lastFrameTime;
         this._lastFrameTime = timestamp;
 
-        // console.log(this._deltaTime);
+        if (this._isRunning) {
+            this.updatePositions();
+            this.checkCollisions();
+        }
 
-        window.requestAnimationFrame(GameManager.ON_UPDATE_BIND);
+        this.render();
+        window.requestAnimationFrame(this._onUpdateBind);
+    }
+    
+    private updatePositions(): void {
+        for (const renderable of this._renderables) {
+            renderable.onUpdate(this._deltaTime);
+        }
+    }
+    
+    private checkCollisions(): void {
+        if (this._ball.checkBoardCollision()) {
+            if (this._playerLeft.checkCollision(this._ball)) {
+                console.log('Collision with LEFT');
+            }
+            
+            else if (this._playerRight.checkCollision(this._ball)) {
+                console.log('Collision with RIGHT');
+            }
+            
+            else {
+                if (this._ball.position.x >= 0.0) 
+                    this.playerScored(this._playerLeft);
+                else 
+                    this.playerScored(this._playerRight);
+            }
+
+            this._ball.bounceFromBoard();
+        }
     }
 
-    private onKeyPress(event: KeyboardEvent): void {}
-    private checkCollisions(): void {}
+    private playerScored(player: Player) {
+        player.scored();
+        this._callbacks.onScore(player, player.score);
+
+        if (player.score >= 10) {
+            this.stop();
+            this._callbacks.onWin(player);
+        }
+    }
+    
+    private render(): void {
+        for (const renderable of this._renderables) {
+            renderable.render(this._context);
+        }
+    }
+
+    public restartGame(): void {
+        this._ball.restart();
+        this._playerLeft.restart();
+        this._playerRight.restart();
+
+        setTimeout(() => {
+            this.start();
+        }, GameManager.CONFIG.gameStartDelay);
+    }
+
+    private onKeyPress(event: KeyboardEvent): void {
+        if (!this._isRunning) return;
+
+        // console.log("Key pressed: " + event.key);
+        switch (event.key) {
+            case 'ArrowUp':
+                // this._playerRight.goUp();
+                this.playerScored(this._playerLeft);
+                break;
+
+            case 'ArrowDown':
+                // this._playerRight.goDown();
+                this.playerScored(this._playerRight);
+                break;
+
+            case 'W':
+            case 'w':
+                this._playerLeft.goUp();
+                break;
+
+            case 'S':
+            case 's':
+                this._playerLeft.goDown();
+                break;
+        
+            default:
+                break;
+        }
+    }
     //#endregion
 }

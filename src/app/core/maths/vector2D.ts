@@ -2,5 +2,7 @@ export class Vector2D {
     public x: number;
     public y: number;
 
-    //TODO: maybe multiply, dot, etc. will be usefull
+    // public multiply(vec: Vector2D): Vector2D {}
+    // pubic add(vec: Vector2D): Vector2D {}
+    // public subtract(vec: Vector2D): Vector2D {}
 }

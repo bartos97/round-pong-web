@@ -20,10 +20,10 @@
             box-sizing: border-box;
             display: block;
             position: absolute;
-            top: $playerWidth - 5px;
-            left: $playerWidth - 5px;
-            width: calc(#{$app-min-size} - 2 * #{$playerWidth} + 5px);
-            height: calc(#{$app-min-size} - 2 * #{$playerWidth} + 5px);
+            top: $playerThickness - 5px;
+            left: $playerThickness - 5px;
+            width: calc(#{$app-min-size} - 2 * #{$playerThickness} + 5px);
+            height: calc(#{$app-min-size} - 2 * #{$playerThickness} + 5px);
             border-radius: 1000vw;
             border: 5px solid $color-primary;
             z-index: 1;
@@ -63,6 +63,21 @@
 
         &.right {
             right: 0;
+        }
+    }
+
+    .loader {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 0;
+        height: 5px;
+        background-color: $color-primary;
+        transition-property: width;
+        transition-duration: 1s;
+
+        &.show {
+            width: 100%;
         }
     }
 }
