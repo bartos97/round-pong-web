@@ -1,10 +1,5 @@
 import { Ball } from "./ball";
-import { Renderable } from "./interfaces";
-
-export enum PlayerType {
-    LEFT,
-    RIGHT
-}
+import { Renderable, PlayerType } from "./interfaces";
 
 export class Player implements Renderable {
     //#region members

@@ -4,16 +4,19 @@ export interface DialogData {
     title: string;
     templateStringified?: string;
     onClose?: () => void;
-    saveButtonData?: {
-        title?: string;
-        onSave: () => void;
-    }
+    saveButtonData?: DialogButtonData;
+}
+
+export interface DialogButtonData {
+    title?: string;
+    onSave: () => void;
 }
 
 /**
  * Singleton
  */
 export class DialogController extends ComponentController {
+    //#region members
     private static _instance: DialogController;
     private _data: DialogData;
 
@@ -22,11 +25,13 @@ export class DialogController extends ComponentController {
     private _elemTitle: HTMLElement;
     private _elemContent: HTMLElement;
     private _elemButtonWrap: HTMLElement;
+    //#endregion
 
     public static get instance(): DialogController {
         return this._instance || (this._instance = new this());
     }
 
+    //#region methods
     public open(data: DialogData): void {
         document.body.style.overflow = 'hidden';
         this._elemBackdrop.hidden = false;
@@ -34,6 +39,7 @@ export class DialogController extends ComponentController {
         this._data = data;
         this._elemTitle.innerHTML = this._data.title || 'Dialog';
         this._elemContent.innerHTML = this._data.templateStringified || '';
+        this._elemCloseBtn.hidden = !this._data.onClose;
 
         if (!!this._data.saveButtonData?.onSave) {
             let button = document.createElement('button');
@@ -76,4 +82,5 @@ export class DialogController extends ComponentController {
             node.removeChild(node.firstChild);
         }
     }
+    //#endregion
 }

@@ -1,7 +1,7 @@
 import { ComponentController } from '../../core/component-controller';
 import { DialogController, DialogData } from '../dialog/dialog.controller';
-import { GameEvents } from '../../game/interfaces';
-import { Player, PlayerType } from '../../game/player';
+import { GameEvents, PlayerType } from '../../game/interfaces';
+import { Player } from '../../game/player';
 import { GameManager } from '../../game/game-manager';
 
 export class GameScreenController extends ComponentController {
@@ -24,9 +24,9 @@ export class GameScreenController extends ComponentController {
         this._dialog = DialogController.instance;
 
         GameManager.instance.init(<HTMLCanvasElement>this.getElement("#gameCanvas"), <GameEvents>{
-            onScore: this.onScore,
-            onWin: this.onWin
-        }, this);
+            onScore: this.onScore.bind(this),
+            onWin: this.onWin.bind(this)
+        });
 
         setTimeout(() => {
             GameManager.instance.start();
@@ -44,6 +44,9 @@ export class GameScreenController extends ComponentController {
 
         this._dialog.open(<DialogData>{
             title: 'Gra wstrzymana',
+            onClose: () => {
+                
+            },
             saveButtonData: {
                 title: 'Wznów',
                 onSave: this.onResume.bind(this)

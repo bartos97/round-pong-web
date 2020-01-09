@@ -1,5 +1,10 @@
 import { Player } from "./player";
 
+export enum PlayerType {
+    LEFT,
+    RIGHT
+}
+
 export interface GameEvents {
     onScore?: (player: Player, score: number) => void;
     onWin?: (player: Player) => void;

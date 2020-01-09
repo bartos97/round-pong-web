@@ -1,7 +1,7 @@
-import { Player, PlayerType } from "./player";
+import { Player } from "./player";
 import { Ball } from "./ball";
 import { Vector2D } from "../core/maths/vector2D";
-import { GameConfig, GameEvents, Renderable } from "./interfaces";
+import { GameConfig, GameEvents, Renderable, PlayerType } from "./interfaces";
 
 /**
  * Singleton
@@ -26,20 +26,21 @@ export class GameManager {
     private _callbacks: GameEvents;
     private _lastFrameTime: DOMHighResTimeStamp = 0;
     private _deltaTime: DOMHighResTimeStamp = 0;
-    private _onUpdateBind: any;
     private _isRunning: boolean = false;
     
     private _renderables: Renderable[];
     private _playerLeft: Player;
     private _playerRight: Player;
     private _ball: Ball;
+
+    private _onUpdateBind: any;
     //#endregion
 
-    public static get instance() {
+    public static get instance(): GameManager {
         return this._instance || (this._instance = new this());
     }
 
-    public init(canvas: HTMLCanvasElement, eventsCallbacks?: GameEvents, originator?: any) {
+    public init(canvas: HTMLCanvasElement, eventsCallbacks?: GameEvents): void {
         if (GameManager._isInitialized) return;
 
         this._canvas = canvas;
@@ -49,8 +50,8 @@ export class GameManager {
         this._context.save();
 
         //TODO: test
-        this._callbacks.onScore = this._callbacks?.onScore?.bind(originator);
-        this._callbacks.onWin = this._callbacks?.onWin?.bind(originator);
+        this._callbacks.onScore = this._callbacks?.onScore;
+        this._callbacks.onWin = this._callbacks?.onWin;
         
         this._renderables = [
             this._playerLeft = new Player(PlayerType.LEFT),
@@ -71,14 +72,22 @@ export class GameManager {
     public start(): void {
         this._isRunning = true;
     }
+
     public stop(): void {
         this._isRunning = false;
     }
-    public toggle(): void {
-        this._isRunning = !this._isRunning;
+
+    public restartGame(): void {
+        this._ball.restart();
+        this._playerLeft.restart();
+        this._playerRight.restart();
+
+        setTimeout(() => {
+            this.start();
+        }, GameManager.CONFIG.gameStartDelay);
     }
 
-    private onUpdate(timestamp: DOMHighResTimeStamp) {
+    private onUpdate(timestamp: DOMHighResTimeStamp): void {
         this._context.clearRect(
             -GameManager.CONFIG.boardSize / 2,
             -GameManager.CONFIG.boardSize / 2,
@@ -124,7 +133,7 @@ export class GameManager {
         }
     }
 
-    private playerScored(player: Player) {
+    private playerScored(player: Player): void {
         player.scored();
         this._callbacks.onScore(player, player.score);
 
@@ -138,16 +147,6 @@ export class GameManager {
         for (const renderable of this._renderables) {
             renderable.render(this._context);
         }
-    }
-
-    public restartGame(): void {
-        this._ball.restart();
-        this._playerLeft.restart();
-        this._playerRight.restart();
-
-        setTimeout(() => {
-            this.start();
-        }, GameManager.CONFIG.gameStartDelay);
     }
 
     private onKeyPress(event: KeyboardEvent): void {

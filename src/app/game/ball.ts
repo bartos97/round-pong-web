@@ -10,7 +10,7 @@ export class Ball implements Renderable {
         return this._position;
     }
 
-    private readonly _radius: number = 50;
+    private readonly _radius: number = GameManager.CONFIG.ballRadius;
     private _position: Vector2D;
     private _speed: Vector2D = {x: 10, y: 10};
     //#endregion
