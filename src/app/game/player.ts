@@ -29,7 +29,8 @@ export class Player implements Renderable {
     }
 
     public restart(): void {
-
+        this._score = 0;
+        // TODO: default position
     }
 
     public scored(): void {

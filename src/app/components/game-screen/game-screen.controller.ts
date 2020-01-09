@@ -3,6 +3,8 @@ import { DialogController, DialogData } from '../dialog/dialog.controller';
 import { GameEvents, PlayerType } from '../../game/interfaces';
 import { Player } from '../../game/player';
 import { GameManager } from '../../game/game-manager';
+import { Vector2D } from '../../core/maths/vector2D';
+import { VectorUtils } from '../../core/maths/vector-utils';
 
 export class GameScreenController extends ComponentController {
     //#region members
@@ -67,7 +69,6 @@ export class GameScreenController extends ComponentController {
     }
 
     private onScore(player: Player, score: number): void {
-        console.log(`Player ${player.ID} scored!`);
         if (player.ID == PlayerType.LEFT) {
             this._elemScoreLeft.innerHTML = `${score}`;
         }

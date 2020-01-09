@@ -14,31 +14,32 @@
         width: $app-min-size;
         height: $app-min-size;     
         position: relative;
-        
-        &::before {
+
+        &::before,
+        &::after {
             content: '';
-            box-sizing: border-box;
             display: block;
             position: absolute;
+            z-index: 1;
+        }
+        
+        &::before {            
+            box-sizing: border-box;
             top: $playerThickness - 5px;
             left: $playerThickness - 5px;
             width: calc(#{$app-min-size} - 2 * #{$playerThickness} + 5px);
             height: calc(#{$app-min-size} - 2 * #{$playerThickness} + 5px);
             border-radius: 1000vw;
             border: 5px solid $color-primary;
-            z-index: 1;
         }
-
+        
         &::after {
-            content: '';
-            display: block;
-            position: absolute;
             top: 0;
             left: calc(50% - 1px);
             width: 2px;
             height: 100%;
             background-color: $color-primary;
-            z-index: 1;
+            opacity: 0.5;
         }
     }
 

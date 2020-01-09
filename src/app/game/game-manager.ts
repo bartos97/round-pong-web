@@ -100,7 +100,7 @@ export class GameManager {
         if (this._isRunning) {
             this.updatePositions();
             this.checkCollisions();
-        }
+        } 
 
         this.render();
         window.requestAnimationFrame(this._onUpdateBind);
@@ -128,8 +128,6 @@ export class GameManager {
                 else 
                     this.playerScored(this._playerRight);
             }
-
-            this._ball.bounceFromBoard();
         }
     }
 
@@ -150,7 +148,7 @@ export class GameManager {
     }
 
     private onKeyPress(event: KeyboardEvent): void {
-        if (!this._isRunning) return;
+        // if (!this._isRunning) return;
 
         // console.log("Key pressed: " + event.key);
         switch (event.key) {
@@ -172,6 +170,10 @@ export class GameManager {
             case 'S':
             case 's':
                 this._playerLeft.goDown();
+                break;
+
+            case ' ':
+                this._isRunning = !this._isRunning;
                 break;
         
             default:
