@@ -34,8 +34,14 @@ export class GameScreenController extends ComponentController {
             GameManager.instance.start();
         }, GameManager.CONFIG.gameStartDelay);
 
-        this.registerEvent(this._elemButtonPause, 'click', this.onPause);
         this.registerEvent(this._elemButtonPlay, 'click', this.onResume);
+        this.registerEvent(this._elemButtonPause, 'click', this.onPause);
+        document.addEventListener('keypress', (event: KeyboardEvent) => {
+            event.stopPropagation();
+            if (event.key == ' ') {
+                this.onPause();
+            }
+        });
     }
 
     //#region methods

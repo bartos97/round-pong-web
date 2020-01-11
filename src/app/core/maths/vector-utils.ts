@@ -13,6 +13,11 @@ export class VectorUtils {
         return new Vector2D(vec.x / vec.length,  vec.y / vec.length);
     }
 
+    public static newUnitVector(x: number, y: number): Vector2D {
+        let length = Math.sqrt(x * x + y * y);
+        return new Vector2D(x / length, y / length);
+    }
+
     public static distance(pointFrom: Vector2D, pointTo: Vector2D): number {
         return this.vectorLength(pointFrom.subtract(pointTo));
     }

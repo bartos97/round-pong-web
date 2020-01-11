@@ -50,6 +50,7 @@ export class DialogController extends ComponentController {
                 this.onClose();
             });
             this._elemButtonWrap.append(button);
+            this.getElement('.button.success').focus();
         }
     }
 

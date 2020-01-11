@@ -9,7 +9,7 @@ export abstract class ComponentController {
         return this.TEMPLATE.querySelector(selector);
     }
 
-    protected registerEvent(element: HTMLElement, eventName: string, callback: () => void) {
+    protected registerEvent(element: HTMLElement, eventName: string, callback: (event?: Event) => void) {
         element.addEventListener(eventName, callback.bind(this));
     }
 }

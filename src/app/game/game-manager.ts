@@ -11,11 +11,16 @@ export class GameManager {
     public static readonly CONFIG: GameConfig = {
         boardSize: 600,
         ballRadius: 25,
+        ballSpeed: 600 / 2,
         playerThickness: 50,
         playerSizeAngle: Math.PI / 6.0,
-        playerAngleIncrement: 0.1 * (Math.PI / 2 - Math.PI / 12),
+        playerAngleIncrement: Math.PI,
         charactersColor: 'rgb(77, 128, 153)',
-        gameStartDelay: 1000
+        gameStartDelay: 1000,
+        helpers: {
+            innerRadius: 600 / 2 - 50, //boardSize / 2 - playerThickness
+            ballHalfAngle: Math.atan2(25, 600 - 25) //y = ballRadius, x = boardSize - ballRadius
+        }
     }
 
     private static _instance: GameManager;
@@ -23,10 +28,11 @@ export class GameManager {
 
     private _context: CanvasRenderingContext2D;
     private _canvas: HTMLCanvasElement;
-    private _callbacks: GameEvents;
+    private _callbacks: GameEvents = {};
     private _lastFrameTime: DOMHighResTimeStamp = 0;
     private _deltaTime: DOMHighResTimeStamp = 0;
     private _isRunning: boolean = false;
+    private _keyPressed = {};
     
     private _renderables: Renderable[];
     private _playerLeft: Player;
@@ -44,7 +50,8 @@ export class GameManager {
         if (GameManager._isInitialized) return;
 
         this._canvas = canvas;
-        this._callbacks = eventsCallbacks;
+        this._callbacks.onScore = eventsCallbacks?.onScore;
+        this._callbacks.onWin = eventsCallbacks?.onWin;
 
         this._canvas.style.width = GameManager.CONFIG.boardSize + 'px';
         this._canvas.style.height = GameManager.CONFIG.boardSize + 'px';
@@ -53,12 +60,9 @@ export class GameManager {
 
         this._context = this._canvas.getContext("2d");
         this._context.translate(this._canvas.width / 2, this._canvas.width / 2);
-        this._context.scale(window.devicePixelRatio, window.devicePixelRatio);
-        this._context.save();
-
-        //TODO: test
-        this._callbacks.onScore = this._callbacks?.onScore;
-        this._callbacks.onWin = this._callbacks?.onWin;
+        this._context.scale(window.devicePixelRatio, -window.devicePixelRatio);
+        this._context.fillStyle = GameManager.CONFIG.charactersColor;
+        this._context.save();        
         
         this._renderables = [
             this._playerLeft = new Player(PlayerType.LEFT),
@@ -66,11 +70,12 @@ export class GameManager {
             this._ball = new Ball()
         ];
 
-        document.addEventListener('keydown', this.onKeyPress.bind(this));
+        document.addEventListener('keydown', this.onKeyDown.bind(this));
+        document.addEventListener('keyup', this.onKeyUp.bind(this))
 
         this._onUpdateBind = this.onUpdate.bind(this);
-        window.requestAnimationFrame(this._onUpdateBind);
         GameManager._isInitialized = true;
+        window.requestAnimationFrame(this._onUpdateBind);
     }
 
     private constructor() {}
@@ -105,6 +110,11 @@ export class GameManager {
         this._lastFrameTime = timestamp;
 
         if (this._isRunning) {
+            if ((this._keyPressed as any)['arrowup']) this._playerRight.goUp(this._deltaTime);
+            if ((this._keyPressed as any)['arrowdown']) this._playerRight.goDown(this._deltaTime);
+            if ((this._keyPressed as any)['w']) this._playerLeft.goUp(this._deltaTime);
+            if ((this._keyPressed as any)['s']) this._playerLeft.goDown(this._deltaTime);
+
             this.updatePositions();
             this.checkCollisions();
         } 
@@ -121,30 +131,26 @@ export class GameManager {
     
     private checkCollisions(): void {
         if (this._ball.checkBoardCollision()) {
-            if (this._playerLeft.checkCollision(this._ball)) {
-                console.log('Collision with LEFT');
+            if (this._playerLeft.checkCollision(this._ball) || this._playerRight.checkCollision(this._ball)) {
+                return;
             }
-            
-            else if (this._playerRight.checkCollision(this._ball)) {
-                console.log('Collision with RIGHT');
+
+            if (this._ball.position.x >= 0.0) {
+                this.playerScored(this._playerLeft);
             }
-            
             else {
-                if (this._ball.position.x >= 0.0) 
-                    this.playerScored(this._playerLeft);
-                else 
-                    this.playerScored(this._playerRight);
+                this.playerScored(this._playerRight);
             }
         }
     }
 
     private playerScored(player: Player): void {
         player.scored();
-        this._callbacks.onScore(player, player.score);
+        this._callbacks.onScore?.(player, player.score);
 
         if (player.score >= 10) {
             this.stop();
-            this._callbacks.onWin(player);
+            this._callbacks.onWin?.(player);
         }
     }
     
@@ -154,38 +160,15 @@ export class GameManager {
         }
     }
 
-    private onKeyPress(event: KeyboardEvent): void {
+    private onKeyDown(event: KeyboardEvent): void {
+        if (!this._isRunning) return;
+        (this._keyPressed as any)[event.key.toLowerCase()] = true;
+    }
+
+    private onKeyUp(event: KeyboardEvent): void {
+        // console.log("Key up: " + event.key);
         // if (!this._isRunning) return;
-
-        // console.log("Key pressed: " + event.key);
-        switch (event.key) {
-            case 'ArrowUp':
-                // this._playerRight.goUp();
-                this.playerScored(this._playerLeft);
-                break;
-
-            case 'ArrowDown':
-                // this._playerRight.goDown();
-                this.playerScored(this._playerRight);
-                break;
-
-            case 'W':
-            case 'w':
-                this._playerLeft.goUp();
-                break;
-
-            case 'S':
-            case 's':
-                this._playerLeft.goDown();
-                break;
-
-            case ' ':
-                this._isRunning = !this._isRunning;
-                break;
-        
-            default:
-                break;
-        }
+        (this._keyPressed as any)[event.key.toLowerCase()] = false;
     }
     //#endregion
 }

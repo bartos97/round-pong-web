@@ -21,16 +21,17 @@
             display: block;
             position: absolute;
             z-index: 1;
+            opacity: 0.35;
         }
         
-        &::before {            
-            box-sizing: border-box;
-            top: $playerThickness - 5px;
-            left: $playerThickness - 5px;
-            width: calc(#{$app-min-size} - 2 * #{$playerThickness} + 5px);
-            height: calc(#{$app-min-size} - 2 * #{$playerThickness} + 5px);
+        &::before {
+            $thickness: 2px;
+            top: $playerThickness - $thickness;
+            left: $playerThickness - $thickness;
+            width: calc(#{$app-min-size} - 2 * #{$playerThickness});
+            height: calc(#{$app-min-size} - 2 * #{$playerThickness});
             border-radius: 1000vw;
-            border: 5px solid $color-primary;
+            border: $thickness solid $color-primary;
         }
         
         &::after {
@@ -39,7 +40,6 @@
             width: 2px;
             height: 100%;
             background-color: $color-primary;
-            opacity: 0.5;
         }
     }
 

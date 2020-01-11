@@ -11,13 +11,18 @@ export interface GameEvents {
 }
 
 export interface GameConfig {
-    boardSize: number;
+    boardSize: number; //side length of square containing game circle
     ballRadius: number;
+    ballSpeed: number; // in pixels per second
     playerThickness: number;
-    playerSizeAngle: number;
-    playerAngleIncrement: number;
-    charactersColor: string;
-    gameStartDelay: number;
+    playerSizeAngle: number; // central angle defininf length of player
+    playerAngleIncrement: number; // per second
+    charactersColor: string; // color of ball and players
+    gameStartDelay: number; // delay to start running game after init
+    helpers: {
+        innerRadius: number; //board inner circle radius
+        ballHalfAngle: number; //angle between X-axis and tangent to ball when ball in collision with board
+    }
 }
 
 export interface Renderable {
