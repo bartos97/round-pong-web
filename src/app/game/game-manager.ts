@@ -45,8 +45,15 @@ export class GameManager {
 
         this._canvas = canvas;
         this._callbacks = eventsCallbacks;
+
+        this._canvas.style.width = GameManager.CONFIG.boardSize + 'px';
+        this._canvas.style.height = GameManager.CONFIG.boardSize + 'px';
+        this._canvas.width = GameManager.CONFIG.boardSize * window.devicePixelRatio;
+        this._canvas.height = GameManager.CONFIG.boardSize * window.devicePixelRatio;
+
         this._context = this._canvas.getContext("2d");
-        this._context.translate(GameManager.CONFIG.boardSize / 2, GameManager.CONFIG.boardSize / 2);
+        this._context.translate(this._canvas.width / 2, this._canvas.width / 2);
+        this._context.scale(window.devicePixelRatio, window.devicePixelRatio);
         this._context.save();
 
         //TODO: test
