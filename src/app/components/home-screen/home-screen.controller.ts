@@ -7,8 +7,9 @@ export class HomeScreenController extends ComponentController {
     }
 
     private openGame(): void {
-        const game = document.getElementById('game-screen');
         this.TEMPLATE.hidden = true;
-        game.hidden = false;
+        const game = document.getElementById('game-screen');        
+        let event = new Event('gamestart');
+        game.dispatchEvent(event);
     }
 }

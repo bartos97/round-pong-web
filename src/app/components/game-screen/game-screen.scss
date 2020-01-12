@@ -74,11 +74,21 @@
         width: 0;
         height: 5px;
         background-color: $color-primary;
-        transition-property: width;
-        transition-duration: 1s;
-
-        &.show {
-            width: 100%;
+        
+        &.run-animation {
+            animation-duration: 1s;
+            animation-name: loaderAnimation;
+            animation-play-state: paused;
         }
+    }
+}
+
+@keyframes loaderAnimation {
+    from {
+        width: 100%;
+    }
+
+    to {
+        width: 0%;
     }
 }

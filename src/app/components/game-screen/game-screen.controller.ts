@@ -3,8 +3,6 @@ import { DialogController, DialogData } from '../dialog/dialog.controller';
 import { GameEvents, PlayerType } from '../../game/interfaces';
 import { Player } from '../../game/player';
 import { GameManager } from '../../game/game-manager';
-import { Vector2D } from '../../core/maths/vector2D';
-import { VectorUtils } from '../../core/maths/vector-utils';
 
 export class GameScreenController extends ComponentController {
     //#region members
@@ -12,7 +10,7 @@ export class GameScreenController extends ComponentController {
     private _elemScoreRight: HTMLElement;
     private _elemButtonPause: HTMLElement;   
     private _elemButtonPlay: HTMLElement;   
-    // private _elemLoader: HTMLElement; 
+    private _elemLoader: HTMLElement; 
     private _dialog: DialogController;
     //#endregion
 
@@ -22,7 +20,7 @@ export class GameScreenController extends ComponentController {
         this._elemButtonPlay = this.getElement('#buttonPlay');
         this._elemScoreLeft = this.getElement("#scoreLeft");
         this._elemScoreRight = this.getElement("#scoreRight");
-        // this._elemLoader = this.getElement("#loader");
+        this._elemLoader = this.getElement("#loader");
         this._dialog = DialogController.instance;
 
         GameManager.instance.init(<HTMLCanvasElement>this.getElement("#gameCanvas"), <GameEvents>{
@@ -30,17 +28,22 @@ export class GameScreenController extends ComponentController {
             onWin: this.onWin.bind(this)
         });
 
-        setTimeout(() => {
-            GameManager.instance.start();
-        }, GameManager.CONFIG.gameStartDelay);
-
         this.registerEvent(this._elemButtonPlay, 'click', this.onResume);
         this.registerEvent(this._elemButtonPause, 'click', this.onPause);
+
         document.addEventListener('keypress', (event: KeyboardEvent) => {
             event.stopPropagation();
             if (event.key == ' ') {
-                this.onPause();
+                this.onPause();   
             }
+        });
+
+        this.TEMPLATE.addEventListener('gamestart', () => {
+            this.TEMPLATE.hidden = false;
+            this._elemLoader.style.animationPlayState = 'running';
+            setTimeout(() => {
+                GameManager.instance.start();
+            }, GameManager.CONFIG.gameStartDelay);
         });
     }
 
@@ -67,11 +70,12 @@ export class GameScreenController extends ComponentController {
         this._elemButtonPlay.hidden = true;
         GameManager.instance.start();
     }
-
+    
     private onRestart(): void {
         GameManager.instance.restartGame();
         this._elemScoreLeft.innerHTML = '0';
         this._elemScoreRight.innerHTML = '0';
+        this.resetLoader();
     }
 
     private onScore(player: Player, score: number): void {
@@ -93,6 +97,12 @@ export class GameScreenController extends ComponentController {
                 onSave: this.onRestart.bind(this)
             }
         });
+    }
+
+    private resetLoader(): void {
+        this._elemLoader.classList.remove('run-animation');
+        void this._elemLoader.offsetHeight;
+        this._elemLoader.classList.add('run-animation');
     }
     //#endregion
 }
